@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="en">
+        <head>
+            <title>To do list app</title>
+            <link href="../static/bootstrap-4/css/bootstrap.min.css" rel="stylesheet">
+        </head>
+        <body>
+            <!-- Header -->
+            <div class ="jumbotron" style="margin-bottom:0">
+                <a class="navbar-brand" href="#">
+                    <img src="../static/imgs/bvu.png" alt="logo" style="height:100px">
+                </a>
+            </div>
+
+            <nav class="navbar navbar-expand-sm bg-dark navbar-dark">
+                <ul class="navbar-nav">
+                    <li class ="nav-item">
+                        <a class="nav-link" href="#">Home</a>
+                    </li>
+
+                    <li class ="nav-item">
+                        <a class="nav-link" href="#">Sign In</a>
+                    </li>
+
+                    <li class ="nav-item">
+                        <a class="nav-link active" href="/signUp">Sign Up</a>
+                    </li>
+                </ul>
+            </nav>
+            <!-- End Header -->
+        {% extends "base.html" %}
+
+        {% block content %}
+            <div class ="container">
+
+                <div class="jumptron">
+                    <h1>To do list App</h1>
+                    <p class="lead"></p>
+                    <p><a class="btn btn-lg btn-success" href="/signUp">Sign up now</a></p>  
+                </div>
+
+                <div class="row marketing">
+                    {% for todoitem in todolist %}
+                    <div class="col-sm-4">
+                       <h4>{{ todoitem.Name }}</h4>
+                       <p>{{ todoitem.Description }}</p> 
+                    </div>
+                    {% endfor %}
+                </div>
+            </div>
+        {% endblock %}
+            <!-- Footer -->
+            <div class="jumbotron text-center" style="margin-bottom:0">
+                <p>Copyright @2020 by HoangPN</p>
+            </div>
+            <!-- End Footer -->
+        </body>
+</html>
