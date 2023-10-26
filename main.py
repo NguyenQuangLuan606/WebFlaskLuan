@@ -44,7 +44,7 @@ def signUp():
         _email = form.inputEmail.data
         _password = form.inputPassword.data
         print("email", _email)
-        
+
         nguyenquangluan = db.session.query(models.User).filter_by(email=_email).count()
         print(nguyenquangluan)
 
@@ -195,14 +195,14 @@ def newProject():
                 project = models.Project(
                     name=_name,
                     deadline=_deadline,
-                    description=_description, status=_status, user=user
+                    description=_description, status=_status
                 )
                 db.session.add(project)
 
             db.session.commit()
             return redirect('/projects')
         else:
-            return render_template('newproject.html', form=form, user=user)
+            return render_template('newproject.html', form=form)
         
     redirect('/')
 
@@ -250,7 +250,7 @@ def editProject():
 
     return redirect('/')
 
-app.route('/deleteProject', methods=['GET', 'POST'])
+@app.route('/deleteProject', methods=['GET', 'POST'])
 def deleteProject():
     _user_id = session.get('user_id')
     if _user_id:
@@ -263,6 +263,20 @@ def deleteProject():
         return redirect('/projects')
 
     return redirect('/signIn')
+
+@app.route('/doneProject', methods=['GET', 'POST'])
+def doneTask():
+    _user_id = session.get('user')
+    if _user_id:
+        _project_id = request.form['hiddenProjectId']
+        if _project_id:
+            project = db.session.query(models.Project).filter_by(project_id = _project_id).first()
+            project.isCompleted = True
+            db.session.commit()
+
+        return redirect('/userHome')
+                
+    return redirect('/')
 
 if __name__ == '__main__':
     app.run(host='127.0.0.1', port='8080', debug=True)
