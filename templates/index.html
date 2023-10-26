@@ -30,6 +30,22 @@
             <!-- End Header -->
         {% extends "base.html" %}
 
+        {% block items %}
+            {% if is_logged_in %}
+                <li class="nav-item">
+                    <a class="nav-link" href="/newProject">New Project</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="/newTask">New Task</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="/logOut">Log Out</a>
+                </li>
+            {% else %}
+                {{ super() }}
+            {% endif %}
+        {% endblock %}
+
         {% block content %}
             <div class ="container">
 

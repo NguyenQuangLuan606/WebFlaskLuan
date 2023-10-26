@@ -1,0 +1,64 @@
+{% extends "userbase.html" %}
+
+{% block items %}
+    <li class="nav-item">
+        <a class="nav-link" href="/newProject">New Project</a>
+    </li>
+    <li class="nav-item">
+        <a class="nav-link" href="/newTask">New Task</a>
+    </li>
+    <li class="nav-item">
+        <a class="nav-link" href="/logOut">Log Out</a>
+    </li>
+{% endblock %}
+
+{% block content %}
+
+    <div class="container">
+        <div class="jumptron text-center">
+            <h1>Welcome {{user.first_name}} {{user.last_name}}</h1>
+        </div>
+
+        <div class="jumbotron text-center">
+            {% if project %}
+                <h1>Edit Project</h1>
+            {% else %}
+                <h1>New Project</h1>
+            {% endif %}
+
+            <form action="" method="post">
+            {{ form.csrf_token }}
+
+            {{ form.hidden_tag() }}
+                {% if task %}
+                    <input type="hidden" name="hiddenProjectId" value="{{ project.project_id }}" />
+                {% else %}
+                    <input type="hidden" name="hiddenProjectId" value="0" />
+                {% endif %}
+
+                {{ form.Name.label(class="sr-only form-label") }}
+                {{ form.Name(class="form-control", placeholder="Name") }}
+
+                {{ form.description.label(class="sr-only form-label") }}
+                {{ form.description(class="form-control", placeholder="Description") }}
+
+                {{ form.deadline.label(class="sr-only form-label") }}
+                {{ form.deadline(class="form-control", placeholder="Deadline") }}
+
+                {{ form.status.label(class="sr-only form-label") }}
+                {{ form.status(class="form-control", placeholder="Status") }}
+
+                <p class="lead"></p>
+                <p>
+                    {% if project %}
+                        {{ form.submitUpdate(class="btn btn-primary btn-lg") }}
+                    {% else %}
+                        {{ form.submitAdd(class="btn btn-primary btn-lg") }}
+                    {% endif %}
+                    <a class="btn btn-lg btn-warning btn-block" href="/projects">Cancel</a>
+                </p>
+            </form>
+        </div>
+
+    </div>
+{% endblock %}

@@ -1,5 +1,5 @@
 from flask import Flask, request, render_template, flash, session, redirect
-from forms import SignUpForm, SignInForm, TaskForm
+from forms import SignUpForm, SignInForm, TaskForm, ProjectForm
 from flask_sqlalchemy import SQLAlchemy
 from flask_migrate import Migrate
 import os
@@ -43,6 +43,10 @@ def signUp():
         _lname = form.inputLastName.data
         _email = form.inputEmail.data
         _password = form.inputPassword.data
+        print("email", _email)
+        
+        nguyenquangluan = db.session.query(models.User).filter_by(email=_email).count()
+        print(nguyenquangluan)
 
         if(db.session.query(models.User).filter_by(email=_email).count() == 0):    
             user = models.User(first_name = _fname, last_name = _lname, email = _email)
@@ -78,6 +82,11 @@ def signIn():
                 flash('Wrong email address or password!')
                 
     return render_template('signin.html', form = form)
+
+@app.route('/logOut')
+def logout():
+    session.pop('user_id', None)
+    return redirect('/')
 
 @app.route('/userHome', methods=['GET', 'POST'])
 def userHome():
@@ -161,6 +170,99 @@ def doneTask():
         return redirect('/userHome')
                 
     return redirect('/')
+
+
+
+
+@app.route('/newProject', methods=['GET', 'POST'])
+def newProject():
+    form = ProjectForm()
+    form.Status.choices = [(s.status_id, s.description) for s in db.session.query(models.Status).all()]
+    
+    if _project_id:
+        project = db.session.query(models.User).filter_by(user_id=session('user_id')).first()
+
+        if form.validate_on_submit():
+            _name = form.Name.data
+            _description = form.Description.data
+            _deadline = form.Deadline.data
+            _status_id = form.Status.data
+            _status = db.session.query(models.Status).filter_by(status_id=_status_id).first()
+
+            _project_id = request.form['hiddenProjectId']
+
+            if _project_id == '0':
+                project = models.Project(
+                    name=_name,
+                    deadline=_deadline,
+                    description=_description, status=_status, user=user
+                )
+                db.session.add(project)
+
+            db.session.commit()
+            return redirect('/projects')
+        else:
+            return render_template('newproject.html', form=form, user=user)
+        
+    redirect('/')
+
+@app.route('/editProject', methods=['GET', 'POST'])
+def editProject():
+    form = ProjectForm()
+
+    form.status.choices = [(s.status_id, s.desc) for s in db.session.query(models.Status).all()]
+
+    _user_id = session.get('user_id')
+    if _user_id:
+        user = db.session.query(models.User).filter_by(user_id=_user_id).first()
+        _project_id = request.form['hiddenProjectId']
+        print("_project_id: " + _project_id)
+        if _project_id:
+            if form.submitUpdate.data:
+                print('Update project', form.data)
+                _name = form.Name.data
+                _description = form.Description.data
+                _deadline = form.Deadline.data
+                _status_id = form.Status.data
+                _status = db.session.query(models.Status).filter_by(status_id=_status_id).first()
+
+                project = db.session.query(models.Project).filter_by(project_id=_project_id).first()
+
+                project.name = _name
+                project.description = _description
+                project.deadline = _deadline
+                project.status = _status
+
+                db.session.commit()
+                return redirect('/projects')
+            else:
+                project = db.session.query(models.Project).filter_by(project_id=_project_id).first()
+                form.process()
+
+                form.Name.data = project.name
+                form.Description.data = project.description
+                form.Deadline.data = project.deadline
+                form.Status.data = project.status.status_id
+
+                return render_template('newproject.html', form=form, user=user, project=project)
+        elif form.validate_on_submit():
+            print('Form validated')
+
+    return redirect('/')
+
+app.route('/deleteProject', methods=['GET', 'POST'])
+def deleteProject():
+    _user_id = session.get('user_id')
+    if _user_id:
+        _project_id = request.form['hiddenProjectId']
+        if _project_id:
+            project = db.session.query(models.Project).filter_by(project_id=_project_id).first()
+            db.session.delete(project)
+            db.session.commit()
+
+        return redirect('/projects')
+
+    return redirect('/signIn')
 
 if __name__ == '__main__':
     app.run(host='127.0.0.1', port='8080', debug=True)
