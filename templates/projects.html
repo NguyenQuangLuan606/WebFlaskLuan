@@ -44,7 +44,7 @@
                             <td> {{ project.tasks|length }} </td>
 
                             <td class="text-center">
-                                <form action="/doneTask" method="post">
+                                <form action="/doneProject" method="post">
                                     <input type="hidden" name="hiddenTaskId" value="{{ project.task_id }}"/>
                                     <button type="submit" class="btn btn-info">Done</button>
                                 </form>
@@ -71,7 +71,7 @@
     {% else %}
         <div class="container ">
             <p>You have no project yet. Click the button to create another project.</p>
-            <a class="btn btn-primary" href="/newproject">Create Project</a>
+            <a class="btn btn-primary" href="/newProject">Create Project</a>
         </div>
     {% endif %}
 {% endblock %}

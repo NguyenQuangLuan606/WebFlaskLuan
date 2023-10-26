@@ -174,6 +174,9 @@ def doneTask():
 
 
 
+
+
+    
 @app.route('/newProject', methods=['GET', 'POST'])
 def newProject():
     form = ProjectForm()
@@ -210,7 +213,7 @@ def newProject():
 def editProject():
     form = ProjectForm()
 
-    form.status.choices = [(s.status_id, s.desc) for s in db.session.query(models.Status).all()]
+    form.status.choices = [(s.status_id, s.description) for s in db.session.query(models.Status).all()]
 
     _user_id = session.get('user_id')
     if _user_id:
@@ -260,9 +263,9 @@ def deleteProject():
             db.session.delete(project)
             db.session.commit()
 
-        return redirect('/projects')
+        return redirect('/userHome')
 
-    return redirect('/signIn')
+    return redirect('/')
 
 @app.route('/doneProject', methods=['GET', 'POST'])
 def doneTask():
