@@ -114,9 +114,11 @@
             </table>
         </div>
     {% else %}
-        <div class="container">
-            <p>You have no project yet. Click the button to create another project.</p>
-            <a class="btn btn-primary" href="/newProject">Create Project</a>
+        <div class="jumptron text-center">
+            <div class="alert alert-warning text-center">
+                <p>You have no project yet. Click the button to create another project.</p>
+            </div>
+            <a class="btn btn-lg btn-primary" href="/newProject">New Project</a>
         </div>
     {% endif %}
     </div>

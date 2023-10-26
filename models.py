@@ -47,11 +47,11 @@ class Project(db.Model):
     tasks = relationship('Task', back_populates='project')
 
     def __repr__(self):
-        return '<Project: {} of name {} and description {}>'.format(self.project_id, self.name)
+        return '<Project: {} of name {}>'.format(self.project_id, self.name)
 
 class Task(db.Model):
     task_id = db.Column(db.Integer, Sequence('task_id_seq'), primary_key=True)
-    description = db.Column(db.String(255), nullable=False)
+    text = db.Column(db.String(255), nullable=False)
     deadline = db.Column(db.Date, nullable=False)
 
     project_id = db.Column(db.Integer, db.ForeignKey('project.project_id'))
@@ -64,7 +64,7 @@ class Task(db.Model):
     priority = relationship('Priority', back_populates='tasks')
     
     def __repr__(self):
-        return '<Task: {}>'.format(self.description)
+        return '<Task: {}>'.format(self.text)
     
     def getPriorityClass(self):
         if (self.priority_id == 1):

@@ -179,11 +179,12 @@ def doneTask():
     
 @app.route('/newProject', methods=['GET', 'POST'])
 def newProject():
+    _user_id = session.get('user')
     form = ProjectForm()
     form.Status.choices = [(s.status_id, s.description) for s in db.session.query(models.Status).all()]
     
-    if _project_id:
-        project = db.session.query(models.User).filter_by(user_id=session('user_id')).first()
+    if _user_id:
+        user = db.session.query(models.User).filter_by(user_id=_user_id).first()
 
         if form.validate_on_submit():
             _name = form.Name.data
@@ -198,14 +199,14 @@ def newProject():
                 project = models.Project(
                     name=_name,
                     deadline=_deadline,
-                    description=_description, status=_status
+                    description=_description, status=_status, user=user
                 )
                 db.session.add(project)
 
             db.session.commit()
             return redirect('/projects')
         else:
-            return render_template('newproject.html', form=form)
+            return render_template('newproject.html', form=form, user=user)
         
     redirect('/')
 
@@ -267,5 +268,18 @@ def deleteProject():
 
     return redirect('/')
 
+@app.route('/doneProject', methods=['GET', 'POST'])
+def doneProject():
+    _user_id = session.get('user')
+    if _user_id:
+        _project_id = request.form['hiddenTaskId']
+        if _project_id:
+            project = db.session.query(models.Task).filter_by(project_id = _project_id).first()
+            project.isCompleted = True
+            db.session.commit()
+
+        return redirect('/userHome')
+                
+    return redirect('/')
 if __name__ == '__main__':
     app.run(host='127.0.0.1', port='8080', debug=True)
