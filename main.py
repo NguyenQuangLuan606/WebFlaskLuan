@@ -267,19 +267,5 @@ def deleteProject():
 
     return redirect('/')
 
-@app.route('/doneProject', methods=['GET', 'POST'])
-def doneTask():
-    _user_id = session.get('user')
-    if _user_id:
-        _project_id = request.form['hiddenProjectId']
-        if _project_id:
-            project = db.session.query(models.Project).filter_by(project_id = _project_id).first()
-            project.isCompleted = True
-            db.session.commit()
-
-        return redirect('/userHome')
-                
-    return redirect('/')
-
 if __name__ == '__main__':
     app.run(host='127.0.0.1', port='8080', debug=True)
