@@ -250,7 +250,7 @@ def editProject():
             else:
                 project = db.session.query(models.Project).filter_by(project_id=_project_id).first()
                 form.process()
-
+g
                 form.Name.data = project.name
                 form.Description.data = project.description
                 form.Deadline.data = project.deadline
