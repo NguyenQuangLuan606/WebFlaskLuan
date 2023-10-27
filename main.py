@@ -222,7 +222,7 @@ def editProject():
         _project_id = request.form['hiddenProjectId']
         print("_project_id: " + _project_id)
         if _project_id:
-            if form.submitUpdate.data:
+            if form.submitUpdateProject.data:
                 print('Update project', form.data)
                 _name = form.Name.data
                 _description = form.Description.data

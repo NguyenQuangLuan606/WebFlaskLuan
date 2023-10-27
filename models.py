@@ -79,7 +79,6 @@ class Task(db.Model):
 class Priority(db.Model):
     priority_id =  db.Column(db.Integer, Sequence('priority_id_seq'), primary_key=True)
     text = db.Column(db.String(64), nullable=False)
-    description = db.Column(db.String(64), nullable=False)
 
     tasks = relationship('Task', back_populates='priority')
 
