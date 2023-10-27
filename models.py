@@ -51,7 +51,7 @@ class Project(db.Model):
 
 class Task(db.Model):
     task_id = db.Column(db.Integer, Sequence('task_id_seq'), primary_key=True)
-    text = db.Column(db.String(255), nullable=False)
+    description = db.Column(db.String(64), nullable=False)
     deadline = db.Column(db.Date, nullable=False)
 
     project_id = db.Column(db.Integer, db.ForeignKey('project.project_id'))
