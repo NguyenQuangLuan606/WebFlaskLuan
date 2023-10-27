@@ -1,5 +1,0 @@
-status_id,description
-1,Chưa thực hiện
-2,Đang thực hiện
-3,Quá hạn
-4,ĐaHoàn thành
