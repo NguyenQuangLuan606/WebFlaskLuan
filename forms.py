@@ -48,4 +48,4 @@ class ProjectForm(FlaskForm):
 
     submitAddProject = SubmitField('Add Project')
     submitUpdateProject = SubmitField('Update Project')
-g
+
