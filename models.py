@@ -35,7 +35,7 @@ class Status(db.Model):
 class Project(db.Model):
     project_id =  db.Column(db.Integer, Sequence('priority_id_seq'), primary_key=True)
     name = db.Column(db.String(50), nullable=False)
-    description = db.Column(db.String(255), nullable=False)
+    desc  = db.Column(db.String(255), nullable=False)
     deadline = db.Column(db.Date, nullable=False)
 
     user_id = db.Column(db.Integer, db.ForeignKey('user.user_id'))
