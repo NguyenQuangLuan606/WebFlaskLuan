@@ -31,17 +31,19 @@
                         <th>Name</th>
                         <th>Description</th>
                         <th>Deadline</th>
-                        <th>Number of Task</th>
+                        <th>Status</th>
                     </tr>
                 </thead>
                 <tbody>
                     {% for project in projects %}
                         <tr class="">
+                            <td> {{ project.name }} </td>
+
                             <td> {{ project.description }} </td>
 
                             <td> {{ project.deadline.strftime("%d/%m/%Y") }} </td>
 
-                            <td> {{ project.tasks|length }} </td>
+                            <td> {{ project.status|length }} </td>
 
                             <td class="text-center">
                                 <form action="/doneProject" method="post">

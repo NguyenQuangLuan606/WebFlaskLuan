@@ -246,7 +246,7 @@ def editProject():
                 form.Name.data = project.name
                 form.Description.data = project.description
                 form.Deadline.data = project.deadline
-                form.Status.data = project.status.status_id
+                form.Status.data = project.status_id
 
                 return render_template('newproject.html', form=form, user=user, project=project)
         elif form.validate_on_submit():
@@ -272,9 +272,9 @@ def deleteProject():
 def doneProject():
     _user_id = session.get('user')
     if _user_id:
-        _project_id = request.form['hiddenTaskId']
+        _project_id = request.form['hiddenProjectId']
         if _project_id:
-            project = db.session.query(models.Task).filter_by(project_id = _project_id).first()
+            project = db.session.query(models.Project).filter_by(project_id = _project_id).first()
             project.isCompleted = True
             db.session.commit()
 
