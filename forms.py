@@ -29,7 +29,7 @@ class TaskForm(FlaskForm):
         [DataRequired(message="Please enter your task content!")])
     inputPriority = SelectField('Priority', coerce = int)
 
-    submit = SubmitField('Create Task')
+    submitAddTask = SubmitField('Create Task')
 
 class ProjectForm(FlaskForm):
     Name = StringField('Name', validators=[
@@ -46,5 +46,6 @@ class ProjectForm(FlaskForm):
 
     Status = SelectField('Status', coerce=int)
 
-    submitAdd = SubmitField('Add Project')
-    submitUpdate = SubmitField('Update Project')
+    submitAddProject = SubmitField('Add Project')
+    submitUpdateProject = SubmitField('Update Project')
+

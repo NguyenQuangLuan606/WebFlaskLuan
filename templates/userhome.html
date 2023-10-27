@@ -76,12 +76,14 @@
                         <th>Name</th>
                         <th>Description</th>
                         <th>Deadline</th>
-                        <th>Number of Task</th>
+                        <th>Status</th>
                     </tr>
                 </thead>
                 <tbody>
                     {% for project in projects %}
                         <tr class="">
+                            <td> {{ project.name }} </td>
+
                             <td> {{ project.description }} </td>
 
                             <td> {{ project.deadline.strftime("%d/%m/%Y") }} </td>

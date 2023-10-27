@@ -214,7 +214,7 @@ def newProject():
 def editProject():
     form = ProjectForm()
 
-    form.status.choices = [(s.status_id, s.description) for s in db.session.query(models.Status).all()]
+    form.Status.choices = [(s.status_id, s.description) for s in db.session.query(models.Status).all()]
 
     _user_id = session.get('user_id')
     if _user_id:
@@ -275,11 +275,13 @@ def doneProject():
         _project_id = request.form['hiddenProjectId']
         if _project_id:
             project = db.session.query(models.Project).filter_by(project_id = _project_id).first()
-            project.isCompleted = True
+            project.status = True
             db.session.commit()
 
         return redirect('/userHome')
                 
     return redirect('/')
+
+
 if __name__ == '__main__':
     app.run(host='127.0.0.1', port='8080', debug=True)
