@@ -254,7 +254,7 @@ def editProject():
                 form.Name.data = project.name
                 form.Description.data = project.description
                 form.Deadline.data = project.deadline
-                form.Status.data = project.status_id
+                form.Status.data = project.status.status_id
 
                 return render_template('newproject.html', form=form, user=user, project=project)
         elif form.validate_on_submit():
