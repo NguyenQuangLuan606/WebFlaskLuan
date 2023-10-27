@@ -36,7 +36,7 @@ class ProjectForm(FlaskForm):
         DataRequired(message='Please enter a name'),
     ])
 
-    desc = StringField('Description', validators=[
+    Description = StringField('Description', validators=[
         DataRequired(message='Please enter a description'),
     ])
 

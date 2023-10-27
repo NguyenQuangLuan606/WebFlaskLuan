@@ -2,6 +2,9 @@
 
 {% block items %}
     {% if is_logged_in %}
+        <li class ="nav-item">
+            <a class="nav-link" href="/userHome">Home</a>
+        </li>
         <li class="nav-item">
             <a class="nav-link" href="/newProject">New Project</a>
         </li>
@@ -31,7 +34,6 @@
                         <th>Name</th>
                         <th>Description</th>
                         <th>Deadline</th>
-                        <th>Status</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -39,18 +41,9 @@
                         <tr class="">
                             <td> {{ project.name }} </td>
 
-                            <td> {{ project.desc }} </td>
+                            <td> {{ project.description }} </td>
 
                             <td> {{ project.deadline.strftime("%d/%m/%Y") }} </td>
-
-                            <td> {{ project.status|length }} </td>
-
-                            <td class="text-center">
-                                <form action="/doneProject" method="post">
-                                    <input type="hidden" name="hiddenTaskId" value="{{ project.task_id }}"/>
-                                    <button type="submit" class="btn btn-info">Done</button>
-                                </form>
-                            </td>
 
                             <td class="text-center">
                                 <form action="/editProject" method="post">
@@ -71,9 +64,12 @@
             </table>
         </div>
     {% else %}
-        <div class="container ">
+    <div class="jumptron text-center">
+        <div class="alert alert-warning text-center">
             <p>You have no project yet. Click the button to create another project.</p>
-            <a class="btn btn-primary" href="/newProject">Create Project</a>
         </div>
+            <p class="lead"></p>
+            <a class="btn btn-primary" href="/newProject">Create Project</a>
+    </div>
     {% endif %}
 {% endblock %}

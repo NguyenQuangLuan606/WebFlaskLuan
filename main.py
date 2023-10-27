@@ -175,20 +175,28 @@ def doneTask():
 
 
 
+@app.route('/projects', methods=['GET', 'POST'])
+def projects_list():
+    _user_id = session.get('user')
 
+    if _user_id:
+        user = db.session.query(models.User).filter_by(user_id=_user_id).first()
+        return render_template('projects.html', user=user, projects=user.projects)
+    else:
+        return redirect('/signIn')
     
 @app.route('/newProject', methods=['GET', 'POST'])
 def newProject():
     _user_id = session.get('user')
     form = ProjectForm()
-    form.Status.choices = [(s.status_id, s.desc) for s in db.session.query(models.Status).all()]
+    form.Status.choices = [(s.status_id, s.description) for s in db.session.query(models.Status).all()]
     
     if _user_id:
         user = db.session.query(models.User).filter_by(user_id=_user_id).first()
 
         if form.validate_on_submit():
             _name = form.Name.data
-            _description = form.desc.data
+            _description = form.Description.data
             _deadline = form.Deadline.data
             _status_id = form.Status.data
             _status = db.session.query(models.Status).filter_by(status_id=_status_id).first()
@@ -199,7 +207,7 @@ def newProject():
                 project = models.Project(
                     name=_name,
                     deadline=_deadline,
-                    desc=_description, status=_status, user=user
+                    description=_description, status=_status, user=user
                 )
                 db.session.add(project)
 
@@ -214,9 +222,9 @@ def newProject():
 def editProject():
     form = ProjectForm()
 
-    form.Status.choices = [(s.status_id, s.desc) for s in db.session.query(models.Status).all()]
+    form.Status.choices = [(s.status_id, s.description) for s in db.session.query(models.Status).all()]
 
-    _user_id = session.get('user_id')
+    _user_id = session.get('user')
     if _user_id:
         user = db.session.query(models.User).filter_by(user_id=_user_id).first()
         _project_id = request.form['hiddenProjectId']
@@ -225,7 +233,7 @@ def editProject():
             if form.submitUpdateProject.data:
                 print('Update project', form.data)
                 _name = form.Name.data
-                _description = form.desc.data
+                _description = form.Description.data
                 _deadline = form.Deadline.data
                 _status_id = form.Status.data
                 _status = db.session.query(models.Status).filter_by(status_id=_status_id).first()
@@ -233,7 +241,7 @@ def editProject():
                 project = db.session.query(models.Project).filter_by(project_id=_project_id).first()
 
                 project.name = _name
-                project.desc = _description
+                project.description = _description
                 project.deadline = _deadline
                 project.status = _status
 
@@ -244,7 +252,7 @@ def editProject():
                 form.process()
 
                 form.Name.data = project.name
-                form.desc.data = project.desc 
+                form.Description.data = project.description
                 form.Deadline.data = project.deadline
                 form.Status.data = project.status_id
 
@@ -256,7 +264,7 @@ def editProject():
 
 @app.route('/deleteProject', methods=['GET', 'POST'])
 def deleteProject():
-    _user_id = session.get('user_id')
+    _user_id = session.get('user')
     if _user_id:
         _project_id = request.form['hiddenProjectId']
         if _project_id:
@@ -264,9 +272,9 @@ def deleteProject():
             db.session.delete(project)
             db.session.commit()
 
-        return redirect('/userHome')
+        return redirect('/projects')
 
-    return redirect('/')
+    return redirect('/signIn')
 
 @app.route('/doneProject', methods=['GET', 'POST'])
 def doneProject():
